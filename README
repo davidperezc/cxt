@@ -1,3 +1,7 @@
 PRACTICA CALIDADE DA XESTION TIC
 
 Archivo de backup sobre el directorio de usuario
+
+Para su ejecución en linux cada 15 minutos:
+	vi /etc/crontab/
+		*/15 * * * * root directorio_del_archivo/backup.sh

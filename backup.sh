@@ -2,6 +2,12 @@
 BACKUP_DIR="/home/backup"
 BACKUP_LIST="user1"
 
+funcPermisos()
+{
+	chown -R $usuario:$usuario $BACKUP_DIR/$filename
+}
+
+
 if [ -z $BACKUP_DIR ]; then
 	BACKUP_DIR="/BACKUP"
 fi
@@ -14,6 +20,7 @@ if [ -n $BACKUP_LIST ]; then
 			filename="$user-$date-tgz"
 			tar -czf $BACKUP_DIR/$filename $DIR_COPIA
 			echo "Backup echo"
+			funcPermisos
 		else
 			echo "Error backup"
 		fi

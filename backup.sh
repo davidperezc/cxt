@@ -2,6 +2,7 @@
 BACKUP_DIR="/home/backup"
 BACKUP_LIST="user1"
 BACKUP_MAXCONT=4
+BACKUP_LOG=""
 
 funcCount()
 {
@@ -17,6 +18,9 @@ funcPermisos()
 	chown -R $usuario:$usuario $BACKUP_DIR/$filename
 }
 
+if [ -z $BACKUP_LOG ]; then
+	priority="user.notice"
+fi
 
 if [ -z $BACKUP_DIR ]; then
 	BACKUP_DIR="/BACKUP"
@@ -33,11 +37,13 @@ if [ -n $BACKUP_LIST ]; then
 			funcPermisos
 		else
 			echo "Error backup"
+			logger -p $priority Error backup
 		fi
 		
 		var=$(find $DIR_COPIA -name ".backup")
 		if [ -z $var ]; then
 			echo "no exite .backup"
+			logger -p $priority Error backup adicional
 		else
 			filename="$user-$date-2.tgz"
 			tar -czf $BACKUP_DIR/$filename $DIR_COPIA

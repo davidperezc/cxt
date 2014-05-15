@@ -1,6 +1,16 @@
 #!/bin/sh
 BACKUP_DIR="/home/backup"
 BACKUP_LIST="user1"
+BACKUP_MAXCONT=4
+
+funcCount()
+{
+	a=$(find $BACKUP_DIR -name "$user" | wc -l)
+	if [ $a -ge $BACKUP_MAXCONT ]; then
+		x=$(ls $BACKUP_DIR -t | tail -1 )
+		rm $BACKUP_DIR/$x
+	fi
+}
 
 funcPermisos()
 {
@@ -24,5 +34,6 @@ if [ -n $BACKUP_LIST ]; then
 		else
 			echo "Error backup"
 		fi
+		funcCount
 	done
 fi

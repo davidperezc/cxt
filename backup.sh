@@ -1,6 +1,16 @@
 #!/bin/sh
 BACKUP_DIR="/home/backup"
 BACKUP_LIST="user1"
+BACKUP_MAXCONT=4
+
+funcCount()
+{
+	a=$(find $BACKUP_DIR -name "$user" | wc -l)
+	if [ $a -ge $BACKUP_MAXCONT ]; then
+		x=$(ls $BACKUP_DIR -t | tail -1 )
+		rm $BACKUP_DIR/$x
+	fi
+}
 
 funcPermisos()
 {
@@ -24,5 +34,15 @@ if [ -n $BACKUP_LIST ]; then
 		else
 			echo "Error backup"
 		fi
+		
+		var=$(find $DIR_COPIA -name ".backup")
+		if [ -z $var ]; then
+			echo "no exite .backup"
+		else
+			filename="$user-$date-2.tgz"
+			tar -czf $BACKUP_DIR/$filename $DIR_COPIA
+			echo "backup adicional"
+		fi
+		funcCount
 	done
 fi
